@@ -1,5 +1,8 @@
 package moe.yo3explorer.azusa.web.entity;
 
+import moe.yo3explorer.azusa.azusa.control.DateUnixtimeAdapter;
+
+import javax.json.bind.annotation.JsonbTypeAdapter;
 import java.net.InetAddress;
 import java.util.Date;
 import java.util.UUID;
@@ -25,6 +28,7 @@ public class PingResponse
     private int randomNumber;
     private String hostname;
 
+    @JsonbTypeAdapter(DateUnixtimeAdapter.class)
     public Date getTimestamp() {
         return timestamp;
     }

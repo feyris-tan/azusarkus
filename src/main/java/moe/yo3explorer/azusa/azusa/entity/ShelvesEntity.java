@@ -1,7 +1,9 @@
 package moe.yo3explorer.azusa.azusa.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import moe.yo3explorer.azusa.azusa.control.DateUnixtimeAdapter;
 
+import javax.json.bind.annotation.JsonbTypeAdapter;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -16,6 +18,7 @@ public class ShelvesEntity extends PanacheEntityBase {
     private Boolean showplatform;
     private boolean ignoreforstatistics;
     private boolean screenshotrequired;
+    @JsonbTypeAdapter(DateUnixtimeAdapter.class)
     private Timestamp dateadded;
 
     @Id
