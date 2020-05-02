@@ -1,0 +1,47 @@
+package moe.yo3explorer.azusa.web.entity;
+
+import java.net.InetAddress;
+import java.util.Date;
+import java.util.UUID;
+
+public class PingResponse
+{
+    public PingResponse()
+    {
+        timestamp = new Date();
+        uuid = UUID.randomUUID();
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            hostname = localHost.getHostName();
+        }
+        catch (Exception e)
+        {
+            hostname = "localhost";
+        }
+    }
+
+    private Date timestamp;
+    private UUID uuid;
+    private int randomNumber;
+    private String hostname;
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public int getRandomNumber() {
+        return randomNumber;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setRandomNumber(int randomNumber) {
+        this.randomNumber = randomNumber;
+    }
+}
