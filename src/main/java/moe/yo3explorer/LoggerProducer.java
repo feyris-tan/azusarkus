@@ -4,7 +4,9 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.inject.Singleton;
 
+@Singleton
 public class LoggerProducer
 {
     private Logger selfLogger;

@@ -11,6 +11,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,7 +71,7 @@ public class ProductResource {
             }
 
             return result;
-        }).collect(Collectors.toList());
+        }).sorted(Comparator.comparing(x -> x.Name)).collect(Collectors.toList());
     }
 
 }
