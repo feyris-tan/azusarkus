@@ -74,4 +74,13 @@ public class ProductResource {
         }).sorted(Comparator.comparing(x -> x.Name)).collect(Collectors.toList());
     }
 
+    @GET
+    @Path("/{id}")
+    @Tag(name = "azusa")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProductsEntity findById(@HeaderParam("Azusa-License") String lic, @PathParam("id") int pid)
+    {
+        restLicenseService.validateLicenseThrowing(lic);
+        return ProductsEntity.findById(pid);
+    }
 }
