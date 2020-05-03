@@ -45,6 +45,7 @@ public class ProductsEntity extends PanacheEntityBase
     public byte[] picture;
     public Double price;
     @Column(name = "\"boughtOn\"")
+    @JsonbTypeAdapter(DateUnixtimeAdapter.class)
     public Date boughtOn;
     public String sku;
     public Integer platform;

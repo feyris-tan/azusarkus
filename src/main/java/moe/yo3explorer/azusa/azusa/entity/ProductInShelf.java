@@ -1,19 +1,23 @@
 package moe.yo3explorer.azusa.azusa.entity;
 
-import java.sql.Date;
+import moe.yo3explorer.azusa.azusa.control.DateUnixtimeAdapter;
+
+import javax.json.bind.annotation.JsonbTypeAdapter;
+import java.util.Date;
 
 public class ProductInShelf
 {
     public int Id;
     public int IconId;
     public String Name;
-    public double Price;
+    public Double Price;
     public int NumberOfDiscs;
-    public boolean ContainsUndumped;
+    public Boolean ContainsUndumped;
     public int relatedShelf;
+    @JsonbTypeAdapter(DateUnixtimeAdapter.class)
     public Date BoughtOn;
-    public long ScreenshotSize;
-    public int MissingGraphData;
-    public long CoverSize;
-    public boolean NSFW;
+    public Long ScreenshotSize;
+    public long MissingGraphData;
+    public Long CoverSize;
+    public Boolean NSFW;
 }

@@ -7,6 +7,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("/azusa/media")
 public class MediaResource {
@@ -22,5 +23,16 @@ public class MediaResource {
         licenseService.validateLicenseThrowing(lic);
 
         return MediaEntity.findById(id);
+    }
+
+    @GET
+    @Path("/inProduct/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Tag(name = "azusa")
+    public List<MediaEntity> findInProduct(@HeaderParam("Azusa-License") String lic, @PathParam("productId") int id)
+    {
+        licenseService.validateLicenseThrowing(lic);
+
+        return MediaEntity.find("relatedproduct = ?1",id).list();
     }
 }
