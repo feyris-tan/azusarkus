@@ -16,4 +16,7 @@ public class ZBlob extends PanacheEntityBase
     public String hashdeep;
     public byte[] blob;
     public Date dateadded;
+
+    @Transient
+    public boolean newlyCreated;
 }

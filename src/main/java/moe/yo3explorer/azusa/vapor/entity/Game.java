@@ -28,4 +28,6 @@ public class Game extends PanacheEntityBase {
     public Date lmtdate;
     public String contenthash;
     public boolean rtp;
+    public int reshits;
+    public int resmisses;
 }

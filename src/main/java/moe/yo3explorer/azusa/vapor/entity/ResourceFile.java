@@ -19,4 +19,5 @@ public class ResourceFile extends PanacheEntityBase
     public String filename;
     public short resourcetype;
     public Date dateadded;
+    public boolean blobfirstseen;
 }

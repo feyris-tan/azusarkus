@@ -1,0 +1,11 @@
+SELECT setval('vapor.games_id_seq', 1, false);
+SELECT setval('vapor.maps_id_seq', 1, false);
+SELECT setval('vapor.resources_id_seq', 1, false);
+SELECT setval('vapor.users_id_seq', 1, false);
+SELECT setval('vapor.zblob_id_seq', 1, false);
+TRUNCATE vapor.games;
+TRUNCATE vapor.maps;
+TRUNCATE vapor.resources;
+TRUNCATE vapor.users;
+TRUNCATE vapor.zblob;
+INSERT INTO vapor.users (username, password) VALUES ('ft','12345');

@@ -170,6 +170,8 @@ public class GameImporter
         game.lmtdate = rpgRtLdbDate;
         game.contenthash = contentHash;
         game.rtp = false;
+        game.reshits = (int)resourcesRequired.stream().filter(x -> !x.blobfirstseen).count();
+        game.resmisses = (int)resourcesRequired.stream().filter(x -> x.blobfirstseen).count();
         game.persist();
 
         for (ResourceFile resourceFile : resourcesRequired) {
@@ -233,6 +235,7 @@ public class GameImporter
         resourceFile.filename = fname;
         resourceFile.resourcetype = getResourceType(fname);
         resourceFile.dateadded = new Date();
+        resourceFile.blobfirstseen = zblob.newlyCreated;
         resourceFiles.add(resourceFile);
     }
 
@@ -242,8 +245,10 @@ public class GameImporter
         hashdeep.engineUpdate(buffer,0,buffer.length);
         String hash = hashdeep.toString();
         ZBlob zblob = testForZblob(hash);
+
         if (zblob == null)
             zblob = createZblob(buffer,hash);
+
         return zblob;
     }
 
@@ -280,6 +285,12 @@ public class GameImporter
             return 14;
         else if (lcase.endsWith(".dll"))
             return 15;
+        else if (lcase.startsWith("battlecharset\\"))
+            return 16;
+        else if (lcase.startsWith("battleweapon\\"))
+            return 17;
+        else if (lcase.startsWith("system2\\"))
+            return 18;
         else
             throw new GameImportException("Could not detect resource type from: " + fname);
     }
@@ -301,6 +312,7 @@ public class GameImporter
         else
             result.blob = uncompressed;
         result.dateadded = new Date();
+        result.newlyCreated = true;
         result.persist();
         logger.info("Created ZBlob: " + hash);
         return result;
