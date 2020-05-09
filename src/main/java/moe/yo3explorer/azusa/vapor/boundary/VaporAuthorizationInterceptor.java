@@ -1,5 +1,6 @@
 package moe.yo3explorer.azusa.vapor.boundary;
 
+import moe.yo3explorer.azusa.vapor.entity.VaporUser;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
@@ -65,13 +66,14 @@ public class VaporAuthorizationInterceptor implements ContainerRequestFilter {
         logger.info("user: " + args[0]);
         logger.info("pass: " + args[1]);
 
-        if (!args[0].equals("ft"))
+        VaporUser theUser = VaporUser.find("username = ?1",args[0]).firstResult();
+        if (theUser == null)
         {
             containerRequestContext.abortWith(forbidden);
             return;
         }
 
-        if (!args[1].equals("12345"))
+        if (!args[1].equals(theUser.password))
         {
             containerRequestContext.abortWith(forbidden);
             return;
