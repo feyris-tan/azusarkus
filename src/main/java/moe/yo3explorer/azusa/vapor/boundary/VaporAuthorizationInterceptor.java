@@ -78,7 +78,7 @@ public class VaporAuthorizationInterceptor implements ContainerRequestFilter {
             return;
         }
 
-        logger.infof("Accepted Vapor Authorization for: %s",args[0]);
+        //logger.infof("Accepted Vapor Authorization for: %s",args[0]);
         return;
     }
 }

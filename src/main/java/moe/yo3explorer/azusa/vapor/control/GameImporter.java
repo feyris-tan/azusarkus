@@ -1,6 +1,5 @@
 package moe.yo3explorer.azusa.vapor.control;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jp.gr.java_conf.dangan.util.lha.LhaHeader;
 import jp.gr.java_conf.dangan.util.lha.LhaInputStream;
 import moe.yo3explorer.azusa.vapor.entity.*;
@@ -10,15 +9,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.transaction.Transactional;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-import java.util.zip.GZIPOutputStream;
 
 @ApplicationScoped
 public class GameImporter
@@ -28,6 +23,15 @@ public class GameImporter
 
     @Inject
     SkuGenerator skuGenerator;
+
+    @Inject
+    ZBlobService zBlobService;
+
+    @Inject
+    ExFontService exFontService;
+
+    @Inject
+    MapService mapService;
 
     public Game tryImportGame(LhaInputStream lha)
     {
@@ -102,7 +106,7 @@ public class GameImporter
             }
             else if (isExe)
             {
-                rpgRtExeId = getZBlob(unpackedEntry).id;
+                rpgRtExeId = zBlobService.findZBlobByContent(unpackedEntry).id;
                 rpgRtExeDate = lhaHeader.getLastModified();
                 continue;
             }
@@ -130,7 +134,7 @@ public class GameImporter
             }
             else if (isLmu)
             {
-                mapsRequired.add(createMapFile(lhaHeader,unpackedEntry));
+                mapsRequired.add(mapService.createMapFile(lhaHeader,unpackedEntry));
                 continue;
             }
 
@@ -194,19 +198,6 @@ public class GameImporter
         return null;
     }
 
-    private @NotNull MapFile createMapFile(@NotNull LhaHeader lhaHeader, byte[] unpackedEntry) {
-        String fname = lhaHeader.getPath();
-        fname = fname.substring(3);
-        fname = fname.substring(0,fname.length() - 4);
-
-        MapFile mapFile = new MapFile();
-        mapFile.mapnumber = Short.parseShort(fname);
-        mapFile.dateadded = new Date();
-        mapFile.mapdata = unpackedEntry;
-        mapFile.filedate = lhaHeader.getLastModified();
-        return mapFile;
-    }
-
     private byte @Nullable [] extractLhaEntry(LhaInputStream lis, @NotNull LhaHeader lh)
     {
         try {
@@ -228,7 +219,7 @@ public class GameImporter
     @Transactional(Transactional.TxType.MANDATORY)
     private void importResource(@NotNull List<ResourceFile> resourceFiles, String fname, byte[] buffer)
     {
-        ZBlob zblob = getZBlob(buffer);
+        ZBlob zblob = zBlobService.findZBlobByContent(buffer);
 
         ResourceFile resourceFile = new ResourceFile();
         resourceFile.zblobid = zblob.id;
@@ -239,20 +230,7 @@ public class GameImporter
         resourceFiles.add(resourceFile);
     }
 
-    @NotNull
-    private ZBlob getZBlob(byte[] buffer) {
-        Hashdeep hashdeep = new Hashdeep();
-        hashdeep.engineUpdate(buffer,0,buffer.length);
-        String hash = hashdeep.toString();
-        ZBlob zblob = testForZblob(hash);
-
-        if (zblob == null)
-            zblob = createZblob(buffer,hash);
-
-        return zblob;
-    }
-
-    private short getResourceType(@NotNull String fname)
+    public short getResourceType(@NotNull String fname)
     {
         String lcase = fname.toLowerCase();
         if (lcase.startsWith("backdrop\\"))
@@ -295,47 +273,4 @@ public class GameImporter
             throw new GameImportException("Could not detect resource type from: " + fname);
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
-    private @NotNull ZBlob createZblob(byte[] buffer, String hash)
-    {
-        byte[] uncompressed = buffer;
-        byte[] compressed = gzipByteArray(buffer);
-        int ratio = compressed.length * 100 / uncompressed.length;
-
-        ZBlob result = new ZBlob();
-        result.hashdeep = hash;
-        if (ratio < 90)
-        {
-            logger.infof("Compressed %07d bytes to %07d bytes (%03d %%)",uncompressed.length,compressed.length,ratio);
-            result.blob = compressed;
-        }
-        else
-            result.blob = uncompressed;
-        result.dateadded = new Date();
-        result.newlyCreated = true;
-        result.persist();
-        logger.info("Created ZBlob: " + hash);
-        return result;
-    }
-
-    private byte[] gzipByteArray(byte[] inbuffer) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            GZIPOutputStream gzip = new GZIPOutputStream(baos, 1024, true);
-            gzip.write(inbuffer, 0, inbuffer.length);
-            gzip.flush();
-            return baos.toByteArray();
-        }
-        catch (IOException e)
-        {
-            logger.warnf(e,"Failed to gzip %d bytes.",inbuffer.length);
-            return inbuffer;
-        }
-    }
-
-    private ZBlob testForZblob(String hash)
-    {
-        Optional<ZBlob> zBlob = ZBlob.find("hashdeep = ?1", hash).firstResultOptional();
-        return zBlob.orElse(null);
-    }
 }

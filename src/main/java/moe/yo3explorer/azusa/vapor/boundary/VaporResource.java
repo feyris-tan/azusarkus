@@ -1,10 +1,11 @@
 package moe.yo3explorer.azusa.vapor.boundary;
 
 import jp.gr.java_conf.dangan.util.lha.LhaInputStream;
-import moe.yo3explorer.azusa.vapor.control.EasyRpgPlayerService;
-import moe.yo3explorer.azusa.vapor.control.GameImporter;
-import moe.yo3explorer.azusa.vapor.control.GameService;
+import moe.yo3explorer.azusa.vapor.control.*;
 import moe.yo3explorer.azusa.vapor.entity.Game;
+import moe.yo3explorer.azusa.vapor.entity.MapFile;
+import moe.yo3explorer.azusa.vapor.entity.ResourceFile;
+import moe.yo3explorer.azusa.vapor.entity.ZBlob;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
@@ -14,9 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 @Path("/vapor")
 @Tag(name = "vapor",description = "easyRPG Kollektionen für's Web!")
@@ -34,6 +33,15 @@ public class VaporResource {
 
     @Inject
     GameService gameService;
+
+    @Inject
+    ZBlobService zBlobService;
+
+    @Inject
+    ExFontService exFontService;
+
+    @Inject
+    MapService mapService;
 
     @GET
     @Path("/ping")
@@ -94,18 +102,133 @@ public class VaporResource {
         return Response.ok(easyRpg.getWasm()).build();
     }
 
-    // http://localhost:8080/vapor/play/index.html?game=MOEM62594
     // http://localhost:8080/vapor/play/games/moem62594/index.json
     @GET
     @Path("/play/games/{sku}/index.json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIndexJson(@PathParam("sku") String sku)
     {
-        sku = sku.toUpperCase();
         Game gameBySku = gameService.findGameBySku(sku);
         if (gameBySku == null)
              return Response.status(Response.Status.NOT_FOUND).build();
 
         return Response.ok(gameService.buildIndexJson(gameBySku)).build();
+    }
+
+    @GET
+    @Path("/play/games/{sku}/RPG_RT.ldb")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getRpgRtLdb(@PathParam("sku") String sku)
+    {
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok(gameBySku.lcfdatabase).build();
+    }
+
+    // http://localhost:8080/vapor/play/games/moem62594/RPG_RT.ini
+    @GET
+    @Path("/play/games/{sku}/RPG_RT.ini")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getRpgRtIni(@PathParam("sku") String sku)
+    {
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        StringWriter iniWriterL1 = new StringWriter();
+        iniWriterL1.write(String.format("[RPG_RT]\r\n"));
+        iniWriterL1.write(String.format("GameTitle=%s\r\n",gameBySku.gametitle));
+
+        if (gameBySku.mapeditmode != null)
+            iniWriterL1.write(String.format("MapEditMode=%d\r\n",gameBySku.mapeditmode));
+
+        if (gameBySku.mapeditzoom != null)
+            iniWriterL1.write(String.format("MapEditZoom=%d\r\n", gameBySku.mapeditzoom));
+
+        iniWriterL1.write(String.format("FullPackageFlag=1\r\n"));
+
+        if (gameBySku.knownversion != null)
+            iniWriterL1.write(String.format("KnownVersion=%d\r\n",gameBySku.knownversion));
+
+        return Response.ok(iniWriterL1.toString()).build();
+    }
+
+    @GET
+    @Path("/play/games/{sku}/RPG_RT.lmt")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getRpgRtLmt(@PathParam("sku") String sku)
+    {
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        return Response.ok(gameBySku.lcfmaptree).build();
+    }
+
+    @GET
+    @Path("/play/games/{sku}/{category}/{resource}")
+    public Response getResource(@PathParam("sku") String sku, @PathParam("category") String category, @PathParam("resource") String resource)
+    {
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        ResourceFile resourceFile = gameService.findResourceFile(gameBySku, category, resource);
+        ZBlob resultZBlob = zBlobService.findZBlobById(resourceFile.zblobid);
+        MediaType mediaType = guessMediaType(resourceFile);
+
+        return Response.ok(resultZBlob.blob,mediaType).build();
+    }
+
+    @GET
+    @Path("/play/games/{sku}/ExFont")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getExFont(@PathParam("sku") String sku)
+    {
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        if (gameBySku.exfont != null)
+            return Response.ok(gameBySku.exfont).build();
+        else
+            return Response.ok(exFontService.getExfont()).build();
+    }
+
+    // http://localhost:8080/vapor/play/index.html?game=MOEM62594
+
+    private MediaType guessMediaType(ResourceFile resourceFile)
+    {
+        String resPath = resourceFile.filename.toLowerCase();
+        if (resPath.endsWith(".png"))
+            return new MediaType("image","png");
+        else if (resPath.endsWith(".wav"))
+            return new MediaType("audio","wav");
+        else if (resPath.endsWith(".mid"))
+            return new MediaType("audio","x-midi");
+        else
+            return new MediaType("application","octet-stream");
+    }
+
+    @GET
+    @Path("/play/games/{sku}/{mapkey}.lmu")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getMap(@PathParam("sku") String sku, @PathParam("mapkey") String mapkey)
+    {
+        mapkey = mapkey.toLowerCase();
+        if (!mapkey.startsWith("map"))
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        Game gameBySku = gameService.findGameBySku(sku);
+        if (gameBySku == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        mapkey = mapkey.substring(3);
+        short mapId = Short.parseShort(mapkey);
+        MapFile mapFile = mapService.findMapFile(gameBySku, mapId);
+
+        return Response.ok(mapFile.mapdata).build();
     }
 }

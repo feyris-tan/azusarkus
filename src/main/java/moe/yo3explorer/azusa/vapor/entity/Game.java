@@ -30,4 +30,5 @@ public class Game extends PanacheEntityBase {
     public boolean rtp;
     public int reshits;
     public int resmisses;
+    public byte[] exfont;
 }
