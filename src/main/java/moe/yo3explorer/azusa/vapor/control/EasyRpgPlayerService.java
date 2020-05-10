@@ -18,9 +18,9 @@ public class EasyRpgPlayerService
 {
     private static final String player_js_tar_gz_url = "https://ci.easyrpg.org/job/player-js/lastSuccessfulBuild/artifact/player-js.tar.gz";
     private static final String player_js_tar_gz = "player-js.tar.gz";
-    private static final String index_html = "index.html";
-    private static final String index_js = "index.js";
-    private static final String index_wasm = "index.wasm";
+    private static final String index_html = "player-js/index.html";
+    private static final String index_js = "player-js/index.js";
+    private static final String index_wasm = "player-js/index.wasm";
 
     @Inject
     Logger logger;
@@ -59,19 +59,35 @@ public class EasyRpgPlayerService
             long done = 0;
             while ((currentEntry = level3.getNextTarEntry()) != null)
             {
+                if (currentEntry.isDirectory())
+                {
+                    File file = new File(currentEntry.getName());
+                    file.mkdirs();
+                    logger.info("Created directory: " + file.getPath());
+                    continue;
+                }
+
                 if (!currentEntry.isFile())
                     continue;
+
 
                 if (currentEntry.getSize() > Integer.MAX_VALUE)
                     throw new RuntimeException("An entry in the easyRPG archive was too big.");
 
+                int realLen = (int)currentEntry.getSize();
                 int len32 = (int)currentEntry.getSize();
+                int offset = 0;
+                int blockSize;
                 byte[] unpackedEntry = new byte[len32];
-                level3.read(unpackedEntry,0,len32);
+                while (len32 > 0) {
+                    blockSize = level3.read(unpackedEntry, offset, len32);
+                    len32 -= blockSize;
+                    offset += blockSize;
+                }
 
-                logger.info("Unpacking: " + currentEntry.getName());
+                logger.infof("Unpacking: %s (%d bytes)",currentEntry.getName(),currentEntry.getSize());
                 FileOutputStream fos = new FileOutputStream(currentEntry.getName());
-                fos.write(unpackedEntry,0,len32);
+                fos.write(unpackedEntry,0,realLen);
                 fos.flush();
                 fos.close();
             }

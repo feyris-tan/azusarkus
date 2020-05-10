@@ -58,23 +58,22 @@ public class VaporAuthorizationInterceptor implements ContainerRequestFilter {
         byte[] decoded = Base64.getDecoder().decode(authArgs[1]);
         String cmdline = new String(decoded);
         String[] args = cmdline.split(":");
-        if (args.length != 2)
-        {
+        if (args.length != 2) {
             containerRequestContext.abortWith(forbidden);
             return;
         }
-        logger.info("user: " + args[0]);
-        logger.info("pass: " + args[1]);
 
         VaporUser theUser = VaporUser.find("username = ?1",args[0]).firstResult();
         if (theUser == null)
         {
+            logger.infof("Vapor user does not exist: %s",theUser.username);
             containerRequestContext.abortWith(forbidden);
             return;
         }
 
         if (!args[1].equals(theUser.password))
         {
+            logger.infof("Vapor user supplied wrong password: %s",theUser.username);
             containerRequestContext.abortWith(forbidden);
             return;
         }
