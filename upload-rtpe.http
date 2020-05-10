@@ -3,7 +3,45 @@ POST http://localhost:8080/vapor/game
 Authorization: Basic ft 12345
 Content-Type: application/x-lzh-compressed
 
-< C:\Users\Anwender\Desktop\Neuer Ordner\SAMPLE GAME.lzh
+< C:\Users\Anwender\Desktop\Neuer Ordner\RTPe.lzh
 
 ###
+
+POST http://localhost:8080/vapor/game
+Authorization: Basic ft 12345
+Content-Type: application/x-lzh-compressed
+
+< C:\Users\Anwender\Desktop\Neuer Ordner\RTP132e.lzh
+
+###
+
+POST http://localhost:8080/vapor/game
+Authorization: Basic ft 12345
+Content-Type: application/x-lzh-compressed
+
+< C:\Users\Anwender\Desktop\Neuer Ordner\CommonRTP.lzh
+
+###
+
+POST http://localhost:8080/vapor/game
+Authorization: Basic ft 12345
+Content-Type: application/x-lzh-compressed
+
+< C:\Users\Anwender\Desktop\Neuer Ordner\SteamRTP2000.lzh
+
+###
+
+POST http://localhost:8080/vapor/game
+Authorization: Basic ft 12345
+Content-Type: application/x-lzh-compressed
+
+< C:\Users\Anwender\Desktop\Neuer Ordner\SteamRTP2003.lzh
+
+###
+
+POST http://localhost:8080/vapor/game
+Authorization: Basic ft 12345
+Content-Type: application/x-lzh-compressed
+
+< C:\Users\Anwender\Desktop\Neuer Ordner\SAMPLE GAME.lzh
 

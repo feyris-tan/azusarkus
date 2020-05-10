@@ -74,6 +74,7 @@ public class ZBlobService
             GZIPOutputStream gzip = new GZIPOutputStream(baos, 1024, true);
             gzip.write(inbuffer, 0, inbuffer.length);
             gzip.flush();
+            gzip.close();
             return baos.toByteArray();
         }
         catch (IOException e)

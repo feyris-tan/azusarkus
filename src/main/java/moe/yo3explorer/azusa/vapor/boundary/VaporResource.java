@@ -179,7 +179,11 @@ public class VaporResource {
         ZBlob resultZBlob = zBlobService.findZBlobById(resourceFile.zblobid);
         MediaType mediaType = guessMediaType(resourceFile);
 
-        return Response.ok(resultZBlob.blob,mediaType).build();
+        boolean cmp = resultZBlob.blob[0] == 0x1f;
+
+        return Response.ok(resultZBlob.blob,mediaType)
+                .encoding(cmp ? "gzip" : "identity")
+                .build();
     }
 
     @GET
@@ -197,7 +201,7 @@ public class VaporResource {
             return Response.ok(exFontService.getExfont()).build();
     }
 
-    // http://localhost:8080/vapor/play/index.html?game=MOEM62594
+    // http://localhost:8080/vapor/play/index.html?game=YDYW85828
 
     private MediaType guessMediaType(ResourceFile resourceFile)
     {
