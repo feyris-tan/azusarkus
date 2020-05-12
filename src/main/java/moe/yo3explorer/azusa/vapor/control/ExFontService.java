@@ -1,6 +1,12 @@
 package moe.yo3explorer.azusa.vapor.control;
 
+import moe.yo3explorer.peparser.PeParser;
+import moe.yo3explorer.peparser.rsrcModel.ImageResourceRepresentation;
+
 import javax.inject.Singleton;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Optional;
 
 @Singleton
 public class ExFontService {
@@ -78,7 +84,7 @@ public class ExFontService {
             0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
     };
 
-    public byte[] getExfont()
+    public byte[] getDefaultExfont()
     {
         byte[] buffer = new byte[exfont_h.length];
         for (int i = 0; i < exfont_h.length; i++)
@@ -86,5 +92,36 @@ public class ExFontService {
             buffer[i] = (byte)exfont_h[i];
         }
         return buffer;
+    }
+
+    private byte[] patchExfont(byte[] exfont)
+    {
+        byte rawData[] =
+                {
+                        (byte)0x42, (byte)0x4D, (byte)0x76, (byte)0x21, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x36, (byte)0x04, (byte)0x00, (byte)0x00, (byte)0x28, (byte)0x00,
+                        (byte)0x00, (byte)0x00, (byte)0x9C, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x30, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x08, (byte)0x00, (byte)0x00, (byte)0x00,
+                        (byte)0x00, (byte)0x00,
+                } ;
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            baos.write(rawData);
+            baos.write(exfont,20,exfont.length - 20);
+            baos.flush();
+            return baos.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public byte[] extractExfontFromRpgRt(byte[] rpgRt)
+    {
+        PeParser peParser = new PeParser(rpgRt);
+        Optional<ImageResourceRepresentation> exfontBytes = peParser.getResources().stream().filter(x -> x.getCategoryName().contains("EXFONT")).findAny();
+        if (exfontBytes.isEmpty())
+            return null;
+
+        byte[] rawExfont = exfontBytes.get().getData();
+        return patchExfont(rawExfont);
     }
 }

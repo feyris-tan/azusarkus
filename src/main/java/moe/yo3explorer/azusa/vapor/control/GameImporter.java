@@ -3,6 +3,7 @@ package moe.yo3explorer.azusa.vapor.control;
 import jp.gr.java_conf.dangan.util.lha.LhaHeader;
 import jp.gr.java_conf.dangan.util.lha.LhaInputStream;
 import moe.yo3explorer.azusa.vapor.entity.*;
+import moe.yo3explorer.peparser.PeParser;
 import org.jboss.logging.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,6 +78,7 @@ public class GameImporter
         Date rpgRtIniDate = null;
         byte[] rpgRtLmt = null;
         Date rpgRtLmtDate = null;
+        byte[] exfont = null;
 
         while (true)
         {
@@ -108,6 +110,7 @@ public class GameImporter
             {
                 rpgRtExeId = zBlobService.findZBlobByContent(unpackedEntry).id;
                 rpgRtExeDate = lhaHeader.getLastModified();
+                exfont = exFontService.extractExfontFromRpgRt(unpackedEntry);
                 continue;
             }
             else if (isLdb)
@@ -163,6 +166,7 @@ public class GameImporter
         game.rpg_rtid = rpgRtExeId;
         game.lcfmaptree = rpgRtLmt;
         game.lcfdatabase = rpgRtLdb;
+        game.exfont = exfont;
 
         Integer guessedRtp = guessRtp(rpgRtExeId);
         if (guessedRtp != null)

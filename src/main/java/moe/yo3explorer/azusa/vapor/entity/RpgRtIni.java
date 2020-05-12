@@ -13,7 +13,7 @@ public class RpgRtIni
     private String gameTitle;
     private Byte mapeditmode;
     private Byte mapeditzoom;
-    private Boolean fullpackageflag;
+    private boolean fullpackageflag;
     private String knownversion;
 
     private RpgRtIni() {}

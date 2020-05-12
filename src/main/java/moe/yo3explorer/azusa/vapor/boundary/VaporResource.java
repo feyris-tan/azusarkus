@@ -198,7 +198,7 @@ public class VaporResource {
         if (gameBySku.exfont != null)
             return Response.ok(gameBySku.exfont).build();
         else
-            return Response.ok(exFontService.getExfont()).build();
+            return Response.ok(exFontService.getDefaultExfont()).build();
     }
 
     // http://localhost:8080/vapor/play/index.html?game=YDYW85828
