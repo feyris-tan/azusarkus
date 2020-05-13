@@ -1,22 +1,25 @@
 package moe.yo3explorer.azusa.vapor.control;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import moe.yo3explorer.azusa.vapor.entity.Game;
 import moe.yo3explorer.azusa.vapor.entity.MapFile;
 import moe.yo3explorer.azusa.vapor.entity.ResourceFile;
-import moe.yo3explorer.azusa.vapor.entity.ZBlob;
 
 import javax.inject.Singleton;
 import javax.json.*;
-import java.io.FileNotFoundException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 public class GameService
 {
+    @PersistenceContext
+    EntityManager em;
+
     public boolean testForSku(String sku)
     {
         long count = Game.count("vapor_sku = ?1", sku);
@@ -55,7 +58,7 @@ public class GameService
             String value = allResource.filename.replace('\\','/');
             String key = value.toLowerCase();
 
-            if (key.endsWith(".png") || key.endsWith(".avi") || key.endsWith(".mid") || key.endsWith(".wav"))
+            if (key.endsWith(".png") || key.endsWith(".avi") || key.endsWith(".mid") || key.endsWith(".wav") || key.endsWith(".bmp") || key.endsWith(".xyz"))
             {
                 key = key.substring(0,key.length() - 4);
             }
@@ -98,4 +101,10 @@ public class GameService
         return findResourceFile(dependentGame,resCategory,resName);
     }
 
+    public List<Game> getAllGames()
+    {
+        Query query = em.createQuery("SELECT new Game(a.id,a.vapor_sku,a.gametitle, a.dateadded, a.rpg_rtid, a.lmtdate,a.reshits,a.resmisses) FROM Game a WHERE a.rtp = FALSE");
+        List resultList = query.getResultList();
+        return resultList;
+    }
 }

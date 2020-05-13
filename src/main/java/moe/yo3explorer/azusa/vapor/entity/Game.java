@@ -8,6 +8,23 @@ import java.util.Date;
 @Table(name = "games",schema = "vapor")
 @Entity
 public class Game extends PanacheEntityBase {
+
+    public Game()
+    {
+    }
+
+    public Game(int id, String vapor_sku, String gametitle, Date dateadded, long rpg_rtid, Date lmtdate, int reshits, int resmisses) {
+        this.id = id;
+        this.vapor_sku = vapor_sku;
+        this.gametitle = gametitle;
+        this.dateadded = dateadded;
+        this.rpg_rtid = rpg_rtid;
+        this.lmtdate = lmtdate;
+        this.reshits = reshits;
+        this.resmisses = resmisses;
+        this.restotal = reshits + resmisses;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
@@ -31,4 +48,7 @@ public class Game extends PanacheEntityBase {
     public int reshits;
     public int resmisses;
     public byte[] exfont;
+
+    @Transient
+    public int restotal;
 }

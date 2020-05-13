@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Azusa - {#insert title}Untitled Page{/}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- JQuery -->
+        <script src="js/jquery.js"></script>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="css/bootstrap.css"/>
+        <script src="js/bootstrap.js"></script>
+
+        <!-- Nanoscroller -->
+        <link rel="stylesheet" href="css/nanoscroller.css"/>
+        <script src="js/nanoscroller.js"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="css/fontawesome.css"/>
+
+        <!-- Azusa -->
+        <link rel="stylesheet" href="css/azusa.css"/>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="topbar">
+                <a class="logo-container" href="index.html">
+                    <img id="azusaFaceset" src="img/azusa_logo.svg"/>
+                    <span>Azusa</span>
+                </a>
+                <a class="topbar-content">
+                    <!-- Add Topbar Content here -->
+                </a>
+            </div>
+            <div class="sidebar">
+                <div class="nano has-scrollbar">
+                    <div class="nano-content menu-content">
+                        <ul class="menu-content-list">
+                            <li role="menuitem"><a href="index.html"><i class="fa fa-cat"></i><span>Dashboard</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="routeBar">
+                    <div class="routeBreadcrumb">
+                        {#insert title}Untitled Page{/}
+                    </div>
+                </div>
+                <div class="content">
+                    {#insert content}No content!{/}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

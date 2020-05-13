@@ -1,5 +1,9 @@
 package moe.yo3explorer.azusa.vapor.boundary;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+import io.quarkus.qute.api.ResourcePath;
 import jp.gr.java_conf.dangan.util.lha.LhaInputStream;
 import moe.yo3explorer.azusa.vapor.control.*;
 import moe.yo3explorer.azusa.vapor.entity.Game;
@@ -16,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.*;
+import java.util.List;
 
 @Path("/vapor")
 @Tag(name = "vapor",description = "easyRPG Kollektionen für's Web!")
@@ -43,12 +48,15 @@ public class VaporResource {
     @Inject
     MapService mapService;
 
+    @Inject
+    Template vaporTemplate;
+
     @GET
-    @Path("/ping")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String ping()
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get()
     {
-        return "Pong!";
+        List<Game> allGames = gameService.getAllGames();
+        return vaporTemplate.data("games",allGames);
     }
 
     @POST
@@ -150,7 +158,7 @@ public class VaporResource {
         iniWriterL1.write(String.format("FullPackageFlag=1\r\n"));
 
         if (gameBySku.knownversion != null)
-            iniWriterL1.write(String.format("KnownVersion=%d\r\n",gameBySku.knownversion));
+            iniWriterL1.write(String.format("KnownVersion=%s\r\n",gameBySku.knownversion));
 
         return Response.ok(iniWriterL1.toString()).build();
     }

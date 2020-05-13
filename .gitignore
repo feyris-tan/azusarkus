@@ -36,3 +36,9 @@ release.properties
 
 .mvn
 application.properties
+
+# Damn you, copyright
+/src/main/resources/META-INF/resources/img/
+/src/main/resources/META-INF/resources/img/alpha.png
+/src/main/resources/META-INF/resources/img/azusa_logo.svg
+/src/main/resources/META-INF/resources/img/topbar.jpg

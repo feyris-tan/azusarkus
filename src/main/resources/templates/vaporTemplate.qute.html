@@ -1,0 +1,23 @@
+{#include template}
+    {#title}Vapor{/title}
+    {#content}
+        <table>
+            <tr>
+                <th>Titel</th>
+                <th></th>
+                <th>Hinzugefügt</th>
+                <th>MapTree Datum</th>
+                <th>Anzahl Ressourcen</th>
+            </tr>
+            {#for game in games}
+                <tr>
+                    <td>{game.gametitle}</td>
+                    <td><a href="vapor/play/index.html?game={game.vapor_sku}"><i class="fa fa-play"></i></a></td>
+                    <td>{game.dateadded}</td>
+                    <td>{game.lmtdate}</td>
+                    <td style="text-align: center;">{game.restotal}</td>
+                </tr>
+            {/for}
+        </table>
+    {/content}
+{/include}

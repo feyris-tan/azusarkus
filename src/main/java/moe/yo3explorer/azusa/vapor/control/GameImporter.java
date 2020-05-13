@@ -91,7 +91,16 @@ public class GameImporter
             byte[] unpackedEntry = extractLhaEntry(lha, lhaHeader);
             contentHashcalculator.engineUpdate(unpackedEntry,0,unpackedEntry.length);
 
+            boolean isDb = fname.endsWith("thumbs.db");
+            if (isDb)
+                continue;
+            boolean isDeltaStarBug = fname.startsWith("music\\") && fname.endsWith(".exe");
+            if (isDeltaStarBug)
+                continue;
+
             boolean isPng = fname.endsWith(".png");
+            boolean isXyz = fname.endsWith(".xyz");
+            boolean isBmp = fname.endsWith(".bmp");
             boolean isAvi = fname.startsWith("movie") && fname.endsWith(".avi");
             boolean isMidi = fname.startsWith("music") && fname.endsWith(".mid");
             boolean isWav = (fname.startsWith("music") || fname.startsWith("sound")) && fname.endsWith(".wav");
@@ -101,7 +110,7 @@ public class GameImporter
             boolean isLmt = fname.equalsIgnoreCase("RPG_RT.lmt");
             boolean isLmu = fname.startsWith("map") && fname.endsWith(".lmu");
             boolean isDll = !fname.contains("\\") && fname.endsWith(".dll");
-            if (isPng || isAvi || isMidi || isWav || isDll)
+            if (isPng || isAvi || isMidi || isWav || isDll || isXyz || isBmp)
             {
                 importResource(resourcesRequired,lhaHeader.getPath(),unpackedEntry);
                 continue;
