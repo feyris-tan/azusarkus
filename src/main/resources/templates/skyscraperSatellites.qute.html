@@ -10,7 +10,7 @@
         {#for sat in sats}
             <tr>
                 <td>{sat.orbitalposition}° {sat.cardinaldirection}</td>
-                <td>{sat.name}</td>
+                <td><a href="skyscraper/sat{sat.id}.dat">{sat.name}</a></td>
             </tr>
         {/for}
     </table>

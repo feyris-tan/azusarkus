@@ -1,0 +1,25 @@
+{#include template}
+{#title}Skyscraper - Frequenzübersicht für {sat.name} auf {sat.orbitalposition}° {sat.cardinaldirection} {/title}
+{#content}
+<div class="waifuFriendly">
+    <table>
+        <tr>
+            <th>Frequenz</th>
+            <th>Anbieter</th>
+            <th>System</th>
+            <th>Modulation</th>
+            <th>zuletzt gesehen</th>
+        </tr>
+        {#for transponder in transponders}
+            <tr>
+                <td>{transponder.renderFrequency()}/{transponder.renderPolarization()}/{transponder.symbolrate}</td>
+                <td>{transponder.resolveSatNetwork()}</td>
+                <td>{transponder.renderSystem()}</td>
+                <td>{transponder.renderFec()}-{transponder.renderModulation()}</td>
+                <td>{transponder.lastvalid}</td>
+            </tr>
+        {/for}
+    </table>
+</div>
+{/content}
+{/include}
