@@ -7,7 +7,7 @@ public class GameResourceMissingException extends RuntimeException
 {
     public GameResourceMissingException(String sku, String resCat, String resName)
     {
-        super(String.format("%d\\%d\\%d",sku,resCat,resName));
+        super(String.format("%s\\%s\\%s",sku,resCat,resName));
     }
 
     public GameResourceMissingException(@NotNull Game game, String resCat, String resName)

@@ -1,6 +1,6 @@
-package moe.yo3explorer.azusa.warwalking.boundary;
+package moe.yo3explorer.azusa.azusaDeprecated.warwalking.boundary;
 
-import moe.yo3explorer.azusa.warwalking.entity.TourEntity;
+import moe.yo3explorer.azusa.azusaDeprecated.warwalking.entity.TourEntity;
 import moe.yo3explorer.azusa.web.boundary.RestLicenseService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -9,7 +9,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package moe.yo3explorer.azusa.notebook.boundary;
+package moe.yo3explorer.azusa.azusaDeprecated.notebook.boundary;
 
-import moe.yo3explorer.azusa.notebook.entity.NoteEntity;
+import moe.yo3explorer.azusa.azusaDeprecated.notebook.entity.NoteEntity;
 import moe.yo3explorer.azusa.web.boundary.RestLicenseService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;

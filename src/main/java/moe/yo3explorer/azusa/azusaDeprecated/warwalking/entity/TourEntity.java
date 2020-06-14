@@ -1,4 +1,4 @@
-package moe.yo3explorer.azusa.warwalking.entity;
+package moe.yo3explorer.azusa.azusaDeprecated.warwalking.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import moe.yo3explorer.azusa.azusa.control.DateUnixtimeAdapter;

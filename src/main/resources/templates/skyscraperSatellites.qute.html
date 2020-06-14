@@ -1,0 +1,19 @@
+{#include template}
+{#title}Skyscraper - Satellitenübersicht{/title}
+{#content}
+<div class="waifuFriendly">
+    <table>
+        <tr>
+            <th>Position</th>
+            <th>Name</th>
+        </tr>
+        {#for sat in sats}
+            <tr>
+                <td>{sat.orbitalposition}° {sat.cardinaldirection}</td>
+                <td>{sat.name}</td>
+            </tr>
+        {/for}
+    </table>
+</div>
+{/content}
+{/include}

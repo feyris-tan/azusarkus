@@ -1,10 +1,9 @@
-package moe.yo3explorer.azusa.sedgetree.boundary;
+package moe.yo3explorer.azusa.azusaDeprecated.sedgetree.boundary;
 
 import io.quarkus.panache.common.Sort;
-import moe.yo3explorer.azusa.sedgetree.entity.VersionEntity;
+import moe.yo3explorer.azusa.azusaDeprecated.sedgetree.entity.VersionEntity;
 import moe.yo3explorer.azusa.web.boundary.RestLicenseService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.hibernate.Incubating;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
