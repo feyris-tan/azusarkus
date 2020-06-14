@@ -41,7 +41,7 @@ public class SkyscraperResource {
     public TemplateInstance listTransponders(@PathParam("id") int id)
     {
         Satellite satellite = Satellite.findById(id);
-        List<Transponder> transponders = Transponder.list("satellite = ?1 AND lastvalid IS NOT NULL",id);
+        List<Transponder> transponders = Transponder.list("satellite = ?1",id);
         transponders.sort(Comparator.comparingDouble(x -> x.frequency));
         return skyscraperTransponders
                 .data("transponders",transponders)

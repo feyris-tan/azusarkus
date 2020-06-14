@@ -5,7 +5,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Table(name = "transponders", schema = "skyscraper")
 @Entity
@@ -25,4 +27,5 @@ public class Transponder extends PanacheEntityBase {
     public Timestamp lastscanned;
     public Timestamp lastvalid;
     public boolean ignore;
+    @Transient public List<Service> serviceList;
 }

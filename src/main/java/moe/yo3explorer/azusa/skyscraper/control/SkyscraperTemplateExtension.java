@@ -1,7 +1,15 @@
 package moe.yo3explorer.azusa.skyscraper.control;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.qute.TemplateExtension;
+import moe.yo3explorer.azusa.skyscraper.entity.NetworkId;
+import moe.yo3explorer.azusa.skyscraper.entity.Service;
 import moe.yo3explorer.azusa.skyscraper.entity.Transponder;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.text.DateFormatter;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 @TemplateExtension
 public class SkyscraperTemplateExtension {
@@ -10,7 +18,11 @@ public class SkyscraperTemplateExtension {
         if (transponder.network == null)
             return "";
 
-        return String.format("Unknown network %d",transponder.network);
+        NetworkId byId = NetworkId.findById(transponder.network);
+        if (byId != null)
+            return byId.name;
+
+        return String.format("Unknown network 0x%04X (%d)",transponder.network,transponder.network);
     }
 
 
@@ -55,5 +67,32 @@ public class SkyscraperTemplateExtension {
         if (result.startsWith("_"))
             result = result.substring(1);
         return result;
+    }
+
+    static List<Service> getServices(@NotNull Transponder transponder)
+    {
+        if (transponder.serviceList == null)
+        {
+            transponder.serviceList = Service.find("transponder = ?1", transponder.id).list();
+        }
+        return transponder.serviceList;
+    }
+
+    static String renderLastSeen(Transponder transponder)
+    {
+        if (transponder.lastvalid == null)
+            return "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        return sdf.format(transponder.lastvalid);
+    }
+
+    static String renderLastSeen(Service service)
+    {
+        if (service.lastseen == null)
+            return "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        return sdf.format(service.lastseen);
     }
 }
