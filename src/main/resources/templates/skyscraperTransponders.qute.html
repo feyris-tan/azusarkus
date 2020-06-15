@@ -21,7 +21,7 @@
             {#for service in transponder.getServices()}
                 <tr>
                     <td style="text-align: right">{#if service.fta}<small>FTA</small>{/if}</td>
-                    <td>{service.name}</td>
+                    <td><a href="service{service.id}.dat">{service.name}</a></td>
                     <td>{service.servicetype}</td>
                     <td></td>
                     <td>{service.renderLastSeen()}</td>

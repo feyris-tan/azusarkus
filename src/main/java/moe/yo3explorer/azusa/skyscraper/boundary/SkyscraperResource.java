@@ -4,11 +4,11 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import moe.yo3explorer.azusa.skyscraper.control.SatelliteComparator;
-import moe.yo3explorer.azusa.skyscraper.entity.Satellite;
-import moe.yo3explorer.azusa.skyscraper.entity.Transponder;
+import moe.yo3explorer.azusa.skyscraper.entity.*;
 import moe.yo3explorer.azusa.vapor.boundary.VaporRelated;
 
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @VaporRelated
 @Path("/skyscraper")
@@ -25,6 +26,9 @@ public class SkyscraperResource {
 
     @Inject
     Template skyscraperTransponders;
+
+    @Inject
+    Template skyscraperService;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -46,5 +50,23 @@ public class SkyscraperResource {
         return skyscraperTransponders
                 .data("transponders",transponders)
                 .data("sat",satellite);
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/service{id}.dat")
+    public TemplateInstance listEvents(@PathParam("id") int id)
+    {
+        Service service = Service.findById(id);
+        return skyscraperService.data("service",service);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/events{id}.json")
+    public List<CalendarEvent> getEvents(@PathParam("id") int id)
+    {
+        List<Event> list = Event.list("service = ?1", id);
+        return list.stream().map(CalendarEvent::new).collect(Collectors.toList());
     }
 }
