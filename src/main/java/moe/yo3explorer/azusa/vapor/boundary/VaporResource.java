@@ -243,4 +243,14 @@ public class VaporResource {
 
         return Response.ok(mapFile.mapdata).build();
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/names.txt")
+    public String listAllNames()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        Game.streamAll().map(x -> ((Game)x).gametitle).forEach(x -> stringBuilder.append(String.format("%s\n",x)));
+        return stringBuilder.toString();
+    }
 }
