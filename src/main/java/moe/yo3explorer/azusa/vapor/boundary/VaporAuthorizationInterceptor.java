@@ -66,7 +66,7 @@ public class VaporAuthorizationInterceptor implements ContainerRequestFilter {
         VaporUser theUser = VaporUser.find("username = ?1",args[0]).firstResult();
         if (theUser == null)
         {
-            logger.infof("Vapor user does not exist: %s",theUser.username);
+            logger.infof("Vapor user does not exist: %s",args[0]);
             containerRequestContext.abortWith(forbidden);
             return;
         }
