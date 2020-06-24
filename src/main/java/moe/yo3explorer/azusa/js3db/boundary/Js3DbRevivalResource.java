@@ -21,4 +21,12 @@ public class Js3DbRevivalResource {
     {
         return js3dbrevivalIndex.instance();
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("testConnect.php")
+    public String testConnectPhp()
+    {
+        return "0";
+    }
 }
