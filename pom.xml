@@ -37,6 +37,7 @@
     </repository>
   </repositories>
   <dependencies>
+    <!-- Quarkus -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
@@ -44,11 +45,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -80,19 +76,36 @@
       <artifactId>quarkus-resteasy-qute</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-vertx-web</artifactId>
+    </dependency>
+
+    <!-- JLHA -->
+    <dependency>
       <groupId>jp.gr.java_conf.dangan</groupId>
       <artifactId>jlha</artifactId>
       <version>0.06-05</version>
     </dependency>
+
+    <!-- Apache Commons -->
       <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-compress</artifactId>
           <version>1.19</version>
       </dependency>
+
+    <!-- yo3explorer PE Parser -->
     <dependency>
       <groupId>moe.yo3explorer</groupId>
       <artifactId>peParser</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Blue Midnight Wish -->
+    <dependency>
+      <groupId>de.sfuhrm</groupId>
+      <artifactId>saphir-hash-core</artifactId>
+      <version>3.0.5</version>
     </dependency>
   </dependencies>
   <build>
