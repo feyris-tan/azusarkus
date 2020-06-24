@@ -16,7 +16,7 @@ public class RoutingFilters {
     public void myFilter(@NotNull RoutingContext rc)
     {
         rc.response().putHeader("X-Azusa-Filter","1");
-        logger.infof("Got request for: %s",rc.request().path());
+        //logger.infof("Got request for: %s",rc.request().path());
         rc.next();
     }
 }
