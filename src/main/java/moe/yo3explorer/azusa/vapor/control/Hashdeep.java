@@ -61,7 +61,7 @@ public class Hashdeep extends MessageDigest implements Cloneable
 
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
     @Contract("_ -> new")
-    private static @NotNull String bytesToHex(byte @NotNull [] bytes) {
+    private static @NotNull String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;

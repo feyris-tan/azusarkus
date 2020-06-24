@@ -211,7 +211,8 @@ public class GameImporter
         return null;
     }
 
-    private byte @Nullable [] extractLhaEntry(LhaInputStream lis, @NotNull LhaHeader lh)
+    @Nullable
+    private byte[] extractLhaEntry(LhaInputStream lis, @NotNull LhaHeader lh)
     {
         try {
             long lhaSize = lh.getOriginalSize();
