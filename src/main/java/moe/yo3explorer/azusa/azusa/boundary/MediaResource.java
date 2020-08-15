@@ -1,5 +1,6 @@
 package moe.yo3explorer.azusa.azusa.boundary;
 
+import moe.yo3explorer.azusa.azusa.control.MediaRepository;
 import moe.yo3explorer.azusa.azusa.entity.MediaEntity;
 import moe.yo3explorer.azusa.web.boundary.RestLicenseService;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -13,6 +14,9 @@ import java.util.List;
 public class MediaResource {
     @Inject
     RestLicenseService licenseService;
+
+    @Inject
+    MediaRepository mediaRepository;
 
     @GET
     @Path("/{byId}")
@@ -34,5 +38,16 @@ public class MediaResource {
         licenseService.validateLicenseThrowing(lic);
 
         return MediaEntity.find("relatedproduct = ?1",id).list();
+    }
+
+    @GET
+    @Path("/lists/full.json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Tag(name = "azusa")
+    public List<MediaEntity> listAll(@HeaderParam("Azusa-License") String lic)
+    {
+        licenseService.validateLicenseThrowing(lic);
+
+        return mediaRepository.listAll();
     }
 }

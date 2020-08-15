@@ -21,4 +21,11 @@ public class MediaRepository
         List resultList = namedQuery.getResultList();
         return resultList;
     }
+
+    public List<MediaEntity> listAll()
+    {
+        Query namedQuery = em.createNamedQuery(MediaEntity.FIND_FULL_LIST_APP);
+        List resultList = namedQuery.getResultList();
+        return resultList;
+    }
 }

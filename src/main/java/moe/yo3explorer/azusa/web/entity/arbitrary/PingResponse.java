@@ -1,4 +1,4 @@
-package moe.yo3explorer.azusa.web.entity;
+package moe.yo3explorer.azusa.web.entity.arbitrary;
 
 import moe.yo3explorer.azusa.azusa.control.DateUnixtimeAdapter;
 

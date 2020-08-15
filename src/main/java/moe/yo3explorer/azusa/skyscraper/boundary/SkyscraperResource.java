@@ -6,6 +6,7 @@ import io.quarkus.qute.TemplateInstance;
 import moe.yo3explorer.azusa.skyscraper.control.SatelliteComparator;
 import moe.yo3explorer.azusa.skyscraper.entity.*;
 import moe.yo3explorer.azusa.vapor.boundary.VaporRelated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -32,6 +33,7 @@ public class SkyscraperResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @Tag(name = "webinterface")
     public TemplateInstance indexHtml()
     {
         List<Satellite> satellites = Satellite.list("name != ?1", "???");
@@ -42,6 +44,7 @@ public class SkyscraperResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/sat{id}.dat")
+    @Tag(name = "webinterface")
     public TemplateInstance listTransponders(@PathParam("id") int id)
     {
         Satellite satellite = Satellite.findById(id);
@@ -55,6 +58,7 @@ public class SkyscraperResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/service{id}.dat")
+    @Tag(name = "webinterface")
     public TemplateInstance listEvents(@PathParam("id") int id)
     {
         Service service = Service.findById(id);
@@ -64,6 +68,7 @@ public class SkyscraperResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/events{id}.json")
+    @Tag(name = "skyscraper")
     public List<CalendarEvent> getEvents(@PathParam("id") int id)
     {
         List<Event> list = Event.list("service = ?1", id);

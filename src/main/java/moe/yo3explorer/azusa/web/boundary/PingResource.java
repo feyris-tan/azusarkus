@@ -1,7 +1,6 @@
 package moe.yo3explorer.azusa.web.boundary;
 
-import moe.yo3explorer.azusa.web.entity.PingResponse;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import moe.yo3explorer.azusa.web.entity.arbitrary.PingResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;

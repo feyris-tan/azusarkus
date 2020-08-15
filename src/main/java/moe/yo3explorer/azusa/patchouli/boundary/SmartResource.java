@@ -8,6 +8,7 @@ import moe.yo3explorer.azusa.patchouli.entity.SmartDisk;
 import moe.yo3explorer.azusa.patchouli.entity.SmartInfo;
 import moe.yo3explorer.azusa.patchouli.entity.SmartValuesEntity;
 import moe.yo3explorer.azusa.vapor.boundary.VaporRelated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -28,6 +29,7 @@ public class SmartResource
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/smart")
+    @Tag(name = "webinterface")
     public TemplateInstance smart()
     {
         List<SmartDisk> disksInUse = SmartDisk.find("decommissioned IS NULL").list();

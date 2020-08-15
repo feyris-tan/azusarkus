@@ -11,6 +11,7 @@ import moe.yo3explorer.azusa.js3db.entity.Js3DbChara;
 import moe.yo3explorer.azusa.js3db.entity.Js3DbUser;
 import moe.yo3explorer.azusa.js3db.entity.Version;
 import moe.yo3explorer.azusa.vapor.control.Hashdeep;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +52,7 @@ public class Js3DbRevivalResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
+    @Tag(name = "webinterface")
     public TemplateInstance indexHtml()
     {
         return js3dbrevivalIndex.instance();
@@ -59,6 +61,7 @@ public class Js3DbRevivalResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("testConnect.php")
+    @Tag(name = "ag3db")
     public String testConnectPhp()
     {
         return "0";
@@ -67,6 +70,7 @@ public class Js3DbRevivalResource {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("ag3dbc/authenticate.php")
+    @Tag(name = "ag3db")
     public String authenticate(@FormParam("version") String version,@FormParam("username") String username, @FormParam("password") String password)
     {
         version = ag3dbcUnobfuscate(version);
@@ -104,6 +108,7 @@ public class Js3DbRevivalResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("/js3dbRegister")
     @Transactional
+    @Tag(name = "webinterface")
     public TemplateInstance register(@FormParam("email") String email, @FormParam("username") String username, @FormParam("password") String password)
     {
         logger.infof("Register user %s (%s) with password %s",username,email,password);
@@ -138,6 +143,7 @@ public class Js3DbRevivalResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("ag3dbc/feeds.php")
+    @Tag(name = "ag3db")
     public String feedsPhp(@FormParam("userId") Integer userId, @FormParam("username") String username, @FormParam("userPwd") String userPwd, @FormParam("type") String type) throws TransformerException, ParserConfigurationException {
         Js3DbUser js3DbUser = validateUser(username, userPwd);
         if (js3DbUser == null)

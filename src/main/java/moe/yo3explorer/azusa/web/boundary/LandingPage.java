@@ -4,6 +4,7 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import moe.yo3explorer.azusa.vapor.boundary.VaporRelated;
 import moe.yo3explorer.azusa.vapor.entity.Game;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import java.awt.*;
 import java.util.List;
 
+@Tag(name = "webinterface")
 @Path("/")
 @Produces(MediaType.TEXT_HTML)
 @VaporRelated

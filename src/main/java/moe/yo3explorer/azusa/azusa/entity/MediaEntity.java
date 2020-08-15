@@ -10,10 +10,12 @@ import java.util.Date;
 @Table(name = "media",schema = "azusa")
 @Entity
 @NamedQueries({
-    @NamedQuery(name = MediaEntity.FIND_KEYS_BY_PRODUCT,query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.dumppath,a.graphdata) FROM MediaEntity a WHERE a.relatedproduct = :pid")
+    @NamedQuery(name = MediaEntity.FIND_KEYS_BY_PRODUCT,query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.dumppath,a.graphdata) FROM MediaEntity a WHERE a.relatedproduct = :pid"),
+    @NamedQuery(name = MediaEntity.FIND_FULL_LIST_APP, query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.sku,a.dumpstoragespace,a.dumppath,a.dateadded,a.issealed,a.dateupdated,a.fauxhash,a.discid) FROM MediaEntity a")
 })
 public class MediaEntity extends PanacheEntityBase {
     public static final String FIND_KEYS_BY_PRODUCT = "Media.FindKeysByProduct";
+    public static final String FIND_FULL_LIST_APP = "Media.FindFullListForApp";
     public MediaEntity() {}
     public MediaEntity(int id, int relatedproduct, String name, int mediatypeid, String dumppath, String graphdata) {
         this.id = id;
@@ -22,6 +24,21 @@ public class MediaEntity extends PanacheEntityBase {
         this.mediatypeid = mediatypeid;
         this.dumppath = dumppath;
         this.graphdata = graphdata;
+    }
+
+    public MediaEntity(int id, int relatedproduct, String name, int mediatypeid, String sku, Integer dumpstoragespace, String dumppath, Date dateadded, boolean issealed, Date dateupdated, long fauxhash, Long discid) {
+        this.id = id;
+        this.relatedproduct = relatedproduct;
+        this.name = name;
+        this.mediatypeid = mediatypeid;
+        this.sku = sku;
+        this.dumpstoragespace = dumpstoragespace;
+        this.dumppath = dumppath;
+        this.dateadded = dateadded;
+        this.issealed = issealed;
+        this.dateupdated = dateupdated;
+        this.fauxhash = fauxhash;
+        this.discid = discid;
     }
 
     @Id
