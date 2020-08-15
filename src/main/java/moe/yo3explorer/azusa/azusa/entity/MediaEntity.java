@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @NamedQueries({
     @NamedQuery(name = MediaEntity.FIND_KEYS_BY_PRODUCT,query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.dumppath,a.graphdata) FROM MediaEntity a WHERE a.relatedproduct = :pid"),
-    @NamedQuery(name = MediaEntity.FIND_FULL_LIST_APP, query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.sku,a.dumpstoragespace,a.dumppath,a.dateadded,a.issealed,a.dateupdated,a.fauxhash,a.discid) FROM MediaEntity a")
+    @NamedQuery(name = MediaEntity.FIND_FULL_LIST_APP, query = "SELECT new MediaEntity(a.id,a.relatedproduct,a.name,a.mediatypeid,a.sku,a.dumpstoragespace,a.dumppath,a.dateadded,a.issealed,a.dateupdated) FROM MediaEntity a")
 })
 public class MediaEntity extends PanacheEntityBase {
     public static final String FIND_KEYS_BY_PRODUCT = "Media.FindKeysByProduct";
@@ -26,7 +26,7 @@ public class MediaEntity extends PanacheEntityBase {
         this.graphdata = graphdata;
     }
 
-    public MediaEntity(int id, int relatedproduct, String name, int mediatypeid, String sku, Integer dumpstoragespace, String dumppath, Date dateadded, boolean issealed, Date dateupdated, long fauxhash, Long discid) {
+    public MediaEntity(int id, int relatedproduct, String name, int mediatypeid, String sku, Integer dumpstoragespace, String dumppath, Date dateadded,boolean issealed,Date dateupdated) {
         this.id = id;
         this.relatedproduct = relatedproduct;
         this.name = name;
