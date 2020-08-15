@@ -11,11 +11,13 @@ import java.util.Date;
 @Entity
 @Table(name = "products",schema = "azusa")
 @NamedQueries({
-        @NamedQuery(name = ProductsEntity.FIND_BY_SHELF_WITHOUT_GRAPHICS, query = "SELECT new ProductsEntity(a.id,a.inshelf,a.name,a.price,a.boughtOn,a.sku,a.platform,a.supplier,a.countryOfOrigin,a.dateadded,a.consistent,a.nsfw,a.complete,a.dateupdated) FROM ProductsEntity a WHERE a.inshelf = :shelf")
+        @NamedQuery(name = ProductsEntity.FIND_BY_SHELF_WITHOUT_GRAPHICS, query = "SELECT new ProductsEntity(a.id,a.inshelf,a.name,a.price,a.boughtOn,a.sku,a.platform,a.supplier,a.countryOfOrigin,a.dateadded,a.consistent,a.nsfw,a.complete,a.dateupdated) FROM ProductsEntity a WHERE a.inshelf = :shelf"),
+        @NamedQuery(name = ProductsEntity.FIND_FULL_LIST_FOR_MOBILE_APP, query = "SELECT new ProductsEntity(a.id,a.inshelf,a.name,a.price,a.boughtOn,a.sku,a.platform,a.supplier,a.countryOfOrigin,a.dateadded,a.consistent,a.nsfw,a.complete,a.dateupdated) FROM ProductsEntity a")
 })
 public class ProductsEntity extends PanacheEntityBase
 {
     public static final String FIND_BY_SHELF_WITHOUT_GRAPHICS = "Products.FindByShelfWithoutGraphics";
+    public static final String FIND_FULL_LIST_FOR_MOBILE_APP = "Products.FindAll";
     public ProductsEntity() {
 
     }

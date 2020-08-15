@@ -41,6 +41,17 @@ public class ProductResource {
         return byShelf;
     }
 
+    @GET
+    @Path("/list/full.json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Tag(name = "azusa")
+    public List<ProductsEntity> findAll(@HeaderParam("Azusa-License") String license)
+    {
+        restLicenseService.validateLicenseThrowing(license);
+        List<ProductsEntity> all = productRepository.findAll();
+        return all;
+    }
+
 
     @GET
     @Path("/inshelf/{shelfId}")

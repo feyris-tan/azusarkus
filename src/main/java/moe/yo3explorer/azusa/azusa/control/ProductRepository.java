@@ -21,6 +21,13 @@ public class ProductRepository {
         return resultList;
     }
 
+    public List<ProductsEntity> findAll()
+    {
+        Query namedQuery = em.createNamedQuery(ProductsEntity.FIND_FULL_LIST_FOR_MOBILE_APP);
+        List resultList = namedQuery.getResultList();
+        return resultList;
+    }
+
     public Long findCoverLength(int productId)
     {
         Query nativeQuery = em.createNativeQuery("SELECT LENGTH(picture) FROM azusa.products WHERE id = :id");
