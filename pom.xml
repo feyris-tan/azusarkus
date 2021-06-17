@@ -12,10 +12,10 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>1.3.1.Final</quarkus-plugin.version>
+    <quarkus-plugin.version>1.13.7.Final</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.3.1.Final</quarkus.platform.version>
+    <quarkus.platform.version>1.13.7.Final</quarkus.platform.version>
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
   </properties>
   <dependencyManagement>
@@ -29,13 +29,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <repositories>
-    <repository>
-      <id>osdn</id>
-      <name>osdn.jp</name>
-      <url>http://orangesignal.osdn.jp/maven2</url>
-    </repository>
-  </repositories>
   <dependencies>
     <!-- Quarkus -->
     <dependency>
@@ -80,13 +73,6 @@
       <artifactId>quarkus-vertx-web</artifactId>
     </dependency>
 
-    <!-- JLHA -->
-    <dependency>
-      <groupId>jp.gr.java_conf.dangan</groupId>
-      <artifactId>jlha</artifactId>
-      <version>0.06-05</version>
-    </dependency>
-
     <!-- Apache Commons -->
       <dependency>
           <groupId>org.apache.commons</groupId>
@@ -94,19 +80,20 @@
           <version>1.19</version>
       </dependency>
 
-    <!-- yo3explorer PE Parser -->
-    <dependency>
-      <groupId>moe.yo3explorer</groupId>
-      <artifactId>peParser</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
     <!-- Blue Midnight Wish -->
     <dependency>
       <groupId>de.sfuhrm</groupId>
       <artifactId>saphir-hash-core</artifactId>
       <version>3.0.5</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>20.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
